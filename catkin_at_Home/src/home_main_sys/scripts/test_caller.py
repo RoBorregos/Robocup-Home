@@ -35,6 +35,7 @@ def call_test_node_service(request_pakcage):
 	# rospy.wait_for_service('atomic2_face_detection')
 	# rospy.wait_for_service('atomic3_orb_movement')
 	rospy.wait_for_service('voice_sythetizer')
+	rospy.wait_for_service('audio_to_text')
 
 	try:
 		print "Generating Proxy caller objects"
