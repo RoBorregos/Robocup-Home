@@ -80,7 +80,7 @@
 
 (defclass home_main_sys::home_std_srvResponse
   :super ros::object
-  :slots (_success _facesDetected _actionID ))
+  :slots (_success _facesDetected _actionID _textFromAudio ))
 
 (defmethod home_main_sys::home_std_srvResponse
   (:init
@@ -88,11 +88,13 @@
     ((:success __success) 0)
     ((:facesDetected __facesDetected) (let (r) (dotimes (i 0) (push "" r)) r))
     ((:actionID __actionID) 0)
+    ((:textFromAudio __textFromAudio) "")
     )
    (send-super :init)
    (setq _success (round __success))
    (setq _facesDetected __facesDetected)
    (setq _actionID (round __actionID))
+   (setq _textFromAudio (string __textFromAudio))
    self)
   (:success
    (&optional __success)
@@ -103,6 +105,9 @@
   (:actionID
    (&optional __actionID)
    (if __actionID (setq _actionID __actionID)) _actionID)
+  (:textFromAudio
+   (&optional __textFromAudio)
+   (if __textFromAudio (setq _textFromAudio __textFromAudio)) _textFromAudio)
   (:serialization-length
    ()
    (+
@@ -112,6 +117,8 @@
     (apply #'+ (mapcar #'(lambda (x) (+ 4 (length x))) _facesDetected)) 4
     ;; int8 _actionID
     1
+    ;; string _textFromAudio
+    4 (length _textFromAudio)
     ))
   (:serialize
    (&optional strm)
@@ -126,6 +133,8 @@
        )
      ;; int8 _actionID
        (write-byte _actionID s)
+     ;; string _textFromAudio
+       (write-long (length _textFromAudio) s) (princ _textFromAudio s)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
@@ -143,6 +152,8 @@
    ;; int8 _actionID
      (setq _actionID (sys::peek buf ptr- :char)) (incf ptr- 1)
      (if (> _actionID 127) (setq _actionID (- _actionID 256)))
+   ;; string _textFromAudio
+     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _textFromAudio (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
    ;;
    self)
   )
@@ -151,7 +162,7 @@
   :super ros::object
   :slots ())
 
-(setf (get home_main_sys::home_std_srv :md5sum-) "f61ede54b340f2a01b2627f1a416ee43")
+(setf (get home_main_sys::home_std_srv :md5sum-) "0ab834d75b4e6c933d600484c31b505e")
 (setf (get home_main_sys::home_std_srv :datatype-) "home_main_sys/home_std_srv")
 (setf (get home_main_sys::home_std_srv :request) home_main_sys::home_std_srvRequest)
 (setf (get home_main_sys::home_std_srv :response) home_main_sys::home_std_srvResponse)
@@ -159,7 +170,7 @@
 (defmethod home_main_sys::home_std_srvRequest
   (:response () (instance home_main_sys::home_std_srvResponse :init)))
 
-(setf (get home_main_sys::home_std_srvRequest :md5sum-) "f61ede54b340f2a01b2627f1a416ee43")
+(setf (get home_main_sys::home_std_srvRequest :md5sum-) "0ab834d75b4e6c933d600484c31b505e")
 (setf (get home_main_sys::home_std_srvRequest :datatype-) "home_main_sys/home_std_srvRequest")
 (setf (get home_main_sys::home_std_srvRequest :definition-)
       "int8 debugMode
@@ -169,9 +180,10 @@ string textCommand
 int8 success
 string[] facesDetected
 int8 actionID
+string textFromAudio
 ")
 
-(setf (get home_main_sys::home_std_srvResponse :md5sum-) "f61ede54b340f2a01b2627f1a416ee43")
+(setf (get home_main_sys::home_std_srvResponse :md5sum-) "0ab834d75b4e6c933d600484c31b505e")
 (setf (get home_main_sys::home_std_srvResponse :datatype-) "home_main_sys/home_std_srvResponse")
 (setf (get home_main_sys::home_std_srvResponse :definition-)
       "int8 debugMode
@@ -181,10 +193,11 @@ string textCommand
 int8 success
 string[] facesDetected
 int8 actionID
+string textFromAudio
 ")
 
 
 
-(provide :home_main_sys/home_std_srv "f61ede54b340f2a01b2627f1a416ee43")
+(provide :home_main_sys/home_std_srv "0ab834d75b4e6c933d600484c31b505e")
 
 

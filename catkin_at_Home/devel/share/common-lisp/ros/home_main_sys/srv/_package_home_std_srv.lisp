@@ -11,4 +11,6 @@
           FACESDETECTED
           ACTIONID-VAL
           ACTIONID
+          TEXTFROMAUDIO-VAL
+          TEXTFROMAUDIO
 ))

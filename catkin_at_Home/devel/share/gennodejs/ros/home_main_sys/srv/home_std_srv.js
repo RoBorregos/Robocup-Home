@@ -136,6 +136,7 @@ class home_std_srvResponse {
       this.success = null;
       this.facesDetected = null;
       this.actionID = null;
+      this.textFromAudio = null;
     }
     else {
       if (initObj.hasOwnProperty('success')) {
@@ -156,6 +157,12 @@ class home_std_srvResponse {
       else {
         this.actionID = 0;
       }
+      if (initObj.hasOwnProperty('textFromAudio')) {
+        this.textFromAudio = initObj.textFromAudio
+      }
+      else {
+        this.textFromAudio = '';
+      }
     }
   }
 
@@ -167,6 +174,8 @@ class home_std_srvResponse {
     bufferOffset = _arraySerializer.string(obj.facesDetected, buffer, bufferOffset, null);
     // Serialize message field [actionID]
     bufferOffset = _serializer.int8(obj.actionID, buffer, bufferOffset);
+    // Serialize message field [textFromAudio]
+    bufferOffset = _serializer.string(obj.textFromAudio, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -180,6 +189,8 @@ class home_std_srvResponse {
     data.facesDetected = _arrayDeserializer.string(buffer, bufferOffset, null)
     // Deserialize message field [actionID]
     data.actionID = _deserializer.int8(buffer, bufferOffset);
+    // Deserialize message field [textFromAudio]
+    data.textFromAudio = _deserializer.string(buffer, bufferOffset);
     return data;
   }
 
@@ -188,7 +199,8 @@ class home_std_srvResponse {
     object.facesDetected.forEach((val) => {
       length += 4 + val.length;
     });
-    return length + 6;
+    length += object.textFromAudio.length;
+    return length + 10;
   }
 
   static datatype() {
@@ -198,7 +210,7 @@ class home_std_srvResponse {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'a2ea2cce6cc27e2a1f66266a6165d24a';
+    return 'b1e285d5f37d939954167facbe11a055';
   }
 
   static messageDefinition() {
@@ -207,6 +219,7 @@ class home_std_srvResponse {
     int8 success
     string[] facesDetected
     int8 actionID
+    string textFromAudio
     
     `;
   }
@@ -238,6 +251,13 @@ class home_std_srvResponse {
       resolved.actionID = 0
     }
 
+    if (msg.textFromAudio !== undefined) {
+      resolved.textFromAudio = msg.textFromAudio;
+    }
+    else {
+      resolved.textFromAudio = ''
+    }
+
     return resolved;
     }
 };
@@ -245,6 +265,6 @@ class home_std_srvResponse {
 module.exports = {
   Request: home_std_srvRequest,
   Response: home_std_srvResponse,
-  md5sum() { return 'f61ede54b340f2a01b2627f1a416ee43'; },
+  md5sum() { return '0ab834d75b4e6c933d600484c31b505e'; },
   datatype() { return 'home_main_sys/home_std_srv'; }
 };

@@ -24,6 +24,7 @@ import time
 # int8 success	(1) TRUE (2) FALSE	|
 # string[] facesDetected			| Response params
 # int8 actionID						|
+# string textFromAudio				|
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -36,7 +37,7 @@ def handle_voice_sythetizer(request_package):
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.
-	response_package = home_std_srvResponse(1,[],0)
+	response_package = home_std_srvResponse(1,[],"",0,"")
 	
 	print "Atending a request..."
 

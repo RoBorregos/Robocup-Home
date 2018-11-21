@@ -26,12 +26,14 @@ struct home_std_srvResponse_
   home_std_srvResponse_()
     : success(0)
     , facesDetected()
-    , actionID(0)  {
+    , actionID(0)
+    , textFromAudio()  {
     }
   home_std_srvResponse_(const ContainerAllocator& _alloc)
     : success(0)
     , facesDetected(_alloc)
-    , actionID(0)  {
+    , actionID(0)
+    , textFromAudio(_alloc)  {
   (void)_alloc;
     }
 
@@ -45,6 +47,9 @@ struct home_std_srvResponse_
 
    typedef int8_t _actionID_type;
   _actionID_type actionID;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _textFromAudio_type;
+  _textFromAudio_type textFromAudio;
 
 
 
@@ -124,12 +129,12 @@ struct MD5Sum< ::home_main_sys::home_std_srvResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "a2ea2cce6cc27e2a1f66266a6165d24a";
+    return "b1e285d5f37d939954167facbe11a055";
   }
 
   static const char* value(const ::home_main_sys::home_std_srvResponse_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xa2ea2cce6cc27e2aULL;
-  static const uint64_t static_value2 = 0x1f66266a6165d24aULL;
+  static const uint64_t static_value1 = 0xb1e285d5f37d9399ULL;
+  static const uint64_t static_value2 = 0x54167facbe11a055ULL;
 };
 
 template<class ContainerAllocator>
@@ -151,6 +156,7 @@ struct Definition< ::home_main_sys::home_std_srvResponse_<ContainerAllocator> >
     return "int8 success\n\
 string[] facesDetected\n\
 int8 actionID\n\
+string textFromAudio\n\
 ";
   }
 
@@ -172,6 +178,7 @@ namespace serialization
       stream.next(m.success);
       stream.next(m.facesDetected);
       stream.next(m.actionID);
+      stream.next(m.textFromAudio);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -200,6 +207,8 @@ struct Printer< ::home_main_sys::home_std_srvResponse_<ContainerAllocator> >
     }
     s << indent << "actionID: ";
     Printer<int8_t>::stream(s, indent + "  ", v.actionID);
+    s << indent << "textFromAudio: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.textFromAudio);
   }
 };
 
