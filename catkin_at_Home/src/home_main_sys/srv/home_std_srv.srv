@@ -1,0 +1,5 @@
+int8 debugMode
+string newFaceName
+---
+int8 success
+string[] facesDetected

@@ -1,0 +1,8 @@
+prefix=/home/parallels/Robocup-Home/catkin_at_Home/install
+
+Name: home_main_sys
+Description: Description of home_main_sys
+Version: 0.0.0
+Cflags: -I/home/parallels/Robocup-Home/catkin_at_Home/install/include
+Libs: -L/home/parallels/Robocup-Home/catkin_at_Home/install/lib -lhome_main_sys
+Requires: roscpp rospy std_msgs message_runtime

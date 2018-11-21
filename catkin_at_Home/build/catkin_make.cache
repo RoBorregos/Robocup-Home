@@ -1,0 +1,2 @@
+home_main_sys
+-DCATKIN_DEVEL_PREFIX=/home/parallels/Robocup-Home/catkin_at_Home/devel -DCMAKE_INSTALL_PREFIX=/home/parallels/Robocup-Home/catkin_at_Home/install -G Unix Makefiles
