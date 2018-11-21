@@ -181,15 +181,18 @@ import struct
 
 
 class home_std_srvResponse(genpy.Message):
-  _md5sum = "a2ea2cce6cc27e2a1f66266a6165d24a"
+  _md5sum = "5154f07ab36983b5aa1f755407bea6e4"
   _type = "home_main_sys/home_std_srvResponse"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 success
 string[] facesDetected
+string targetFaceName
 int8 actionID
+string textFromAudio
+
 """
-  __slots__ = ['success','facesDetected','actionID']
-  _slot_types = ['int8','string[]','int8']
+  __slots__ = ['success','facesDetected','targetFaceName','actionID','textFromAudio']
+  _slot_types = ['int8','string[]','string','int8','string']
 
   def __init__(self, *args, **kwds):
     """
@@ -199,7 +202,7 @@ int8 actionID
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       success,facesDetected,actionID
+       success,facesDetected,targetFaceName,actionID,textFromAudio
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -212,12 +215,18 @@ int8 actionID
         self.success = 0
       if self.facesDetected is None:
         self.facesDetected = []
+      if self.targetFaceName is None:
+        self.targetFaceName = ''
       if self.actionID is None:
         self.actionID = 0
+      if self.textFromAudio is None:
+        self.textFromAudio = ''
     else:
       self.success = 0
       self.facesDetected = []
+      self.targetFaceName = ''
       self.actionID = 0
+      self.textFromAudio = ''
 
   def _get_types(self):
     """
@@ -240,7 +249,19 @@ int8 actionID
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      _x = self.targetFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
       buff.write(_get_struct_b().pack(self.actionID))
+      _x = self.textFromAudio
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -270,8 +291,26 @@ int8 actionID
           val1 = str[start:end]
         self.facesDetected.append(val1)
       start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.targetFaceName = str[start:end].decode('utf-8')
+      else:
+        self.targetFaceName = str[start:end]
+      start = end
       end += 1
       (self.actionID,) = _get_struct_b().unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.textFromAudio = str[start:end].decode('utf-8')
+      else:
+        self.textFromAudio = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -293,7 +332,19 @@ int8 actionID
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      _x = self.targetFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
       buff.write(_get_struct_b().pack(self.actionID))
+      _x = self.textFromAudio
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -324,8 +375,26 @@ int8 actionID
           val1 = str[start:end]
         self.facesDetected.append(val1)
       start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.targetFaceName = str[start:end].decode('utf-8')
+      else:
+        self.targetFaceName = str[start:end]
+      start = end
       end += 1
       (self.actionID,) = _get_struct_b().unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.textFromAudio = str[start:end].decode('utf-8')
+      else:
+        self.textFromAudio = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -342,6 +411,6 @@ def _get_struct_b():
     return _struct_b
 class home_std_srv(object):
   _type          = 'home_main_sys/home_std_srv'
-  _md5sum = 'f61ede54b340f2a01b2627f1a416ee43'
+  _md5sum = '545d9745cfdca0f0ffe4b73783ff6bc8'
   _request_class  = home_std_srvRequest
   _response_class = home_std_srvResponse

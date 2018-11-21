@@ -17,7 +17,9 @@ import subprocess
 # ---
 # int8 success	(1) TRUE (2) FALSE	|
 # string[] facesDetected			| Response params
+# string targetFaceName				|
 # int8 actionID						|
+# string textFromAudio
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -30,7 +32,7 @@ def handle_face_learning_service(request_package):
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.
-	response_package = home_std_srvResponse(1,[],0)
+	response_package = home_std_srvResponse(1,[],"",0,"")
 	
 	print "Atending a request..."
 
@@ -38,7 +40,7 @@ def handle_face_learning_service(request_package):
 	##########################################################################
 	# time.sleep(5)
 	newName = request_package.newFaceName
-	subprocess.call("python3","/home/sebasrivera96/Documents/Github/tabellarius/main.py", "learn", newName])
+	subprocess.call(["python3","/home/sebasrivera96/Documents/Github/tabellarius/main.py", "learn", newName])
 
 
 

@@ -135,7 +135,9 @@ class home_std_srvResponse {
       // initObj === null is a special case for deserialization where we don't initialize fields
       this.success = null;
       this.facesDetected = null;
+      this.targetFaceName = null;
       this.actionID = null;
+      this.textFromAudio = null;
     }
     else {
       if (initObj.hasOwnProperty('success')) {
@@ -150,11 +152,23 @@ class home_std_srvResponse {
       else {
         this.facesDetected = [];
       }
+      if (initObj.hasOwnProperty('targetFaceName')) {
+        this.targetFaceName = initObj.targetFaceName
+      }
+      else {
+        this.targetFaceName = '';
+      }
       if (initObj.hasOwnProperty('actionID')) {
         this.actionID = initObj.actionID
       }
       else {
         this.actionID = 0;
+      }
+      if (initObj.hasOwnProperty('textFromAudio')) {
+        this.textFromAudio = initObj.textFromAudio
+      }
+      else {
+        this.textFromAudio = '';
       }
     }
   }
@@ -165,8 +179,12 @@ class home_std_srvResponse {
     bufferOffset = _serializer.int8(obj.success, buffer, bufferOffset);
     // Serialize message field [facesDetected]
     bufferOffset = _arraySerializer.string(obj.facesDetected, buffer, bufferOffset, null);
+    // Serialize message field [targetFaceName]
+    bufferOffset = _serializer.string(obj.targetFaceName, buffer, bufferOffset);
     // Serialize message field [actionID]
     bufferOffset = _serializer.int8(obj.actionID, buffer, bufferOffset);
+    // Serialize message field [textFromAudio]
+    bufferOffset = _serializer.string(obj.textFromAudio, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -178,8 +196,12 @@ class home_std_srvResponse {
     data.success = _deserializer.int8(buffer, bufferOffset);
     // Deserialize message field [facesDetected]
     data.facesDetected = _arrayDeserializer.string(buffer, bufferOffset, null)
+    // Deserialize message field [targetFaceName]
+    data.targetFaceName = _deserializer.string(buffer, bufferOffset);
     // Deserialize message field [actionID]
     data.actionID = _deserializer.int8(buffer, bufferOffset);
+    // Deserialize message field [textFromAudio]
+    data.textFromAudio = _deserializer.string(buffer, bufferOffset);
     return data;
   }
 
@@ -188,7 +210,9 @@ class home_std_srvResponse {
     object.facesDetected.forEach((val) => {
       length += 4 + val.length;
     });
-    return length + 6;
+    length += object.targetFaceName.length;
+    length += object.textFromAudio.length;
+    return length + 14;
   }
 
   static datatype() {
@@ -198,7 +222,7 @@ class home_std_srvResponse {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'a2ea2cce6cc27e2a1f66266a6165d24a';
+    return '5154f07ab36983b5aa1f755407bea6e4';
   }
 
   static messageDefinition() {
@@ -206,7 +230,10 @@ class home_std_srvResponse {
     return `
     int8 success
     string[] facesDetected
+    string targetFaceName
     int8 actionID
+    string textFromAudio
+    
     
     `;
   }
@@ -231,11 +258,25 @@ class home_std_srvResponse {
       resolved.facesDetected = []
     }
 
+    if (msg.targetFaceName !== undefined) {
+      resolved.targetFaceName = msg.targetFaceName;
+    }
+    else {
+      resolved.targetFaceName = ''
+    }
+
     if (msg.actionID !== undefined) {
       resolved.actionID = msg.actionID;
     }
     else {
       resolved.actionID = 0
+    }
+
+    if (msg.textFromAudio !== undefined) {
+      resolved.textFromAudio = msg.textFromAudio;
+    }
+    else {
+      resolved.textFromAudio = ''
     }
 
     return resolved;
@@ -245,6 +286,6 @@ class home_std_srvResponse {
 module.exports = {
   Request: home_std_srvRequest,
   Response: home_std_srvResponse,
-  md5sum() { return 'f61ede54b340f2a01b2627f1a416ee43'; },
+  md5sum() { return '545d9745cfdca0f0ffe4b73783ff6bc8'; },
   datatype() { return 'home_main_sys/home_std_srv'; }
 };

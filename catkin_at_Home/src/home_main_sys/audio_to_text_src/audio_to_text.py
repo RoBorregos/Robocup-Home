@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 
-from gtts import gTTS
-from io import BytesIO
 
-from pygame import mixer
-import pygame
+# Speech to text converter
+import speech_recognition as sr
 
-from tempfile import TemporaryFile
-
+import sys
 import rospy
 from home_main_sys.srv import *
 import time
@@ -24,7 +21,7 @@ import time
 # int8 success	(1) TRUE (2) FALSE	|
 # string[] facesDetected			| Response params
 # int8 actionID						|
-# string textFromAudio				|
+# string textFromAudio
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -32,7 +29,7 @@ import time
 # Funcionality is implemented here
 ###################################
 
-def handle_voice_sythetizer(request_package):
+def handle_audio_to_text(request_package):
 
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
@@ -43,48 +40,45 @@ def handle_voice_sythetizer(request_package):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-
-	text_to_speak = request_package.textCommand
-
-	tts = gTTS(text_to_speak, "en")
-
-	sf = TemporaryFile()
-	tts.write_to_fp(sf)
-	sf.seek(0)
-	mixer.init()
-	mixer.music.load(sf)
-
-	print "I will synthetize the following text : ", text_to_speak
-	print "speaking now"
-	mixer.music.play()
-
-	# Wait to finish speaking
-	while mixer.music.get_busy(): 
-		pygame.time.Clock().tick(10)
-	print "Done speaking"
-
-
-
-	##########################################################################
+	flag = False
 	
-	print "returing now"
+	while not flag:
+		try:
 
-	# This handle MUST return a Service Response 
-	return response_package
+			r = sr.Recognizer()
+			with sr.Microphone() as source:
+				print ('say something')
+				audio = r.listen(source)
 
-def voice_sythetizer():
-	rospy.init_node('voice_sythetizer_service_node')
-	s = rospy.Service('voice_sythetizer', home_std_srv, handle_voice_sythetizer)
+			audio_string = r.recognize_google(audio)
+			print(audio_string)
+
+			response_package.textFromAudio = audio_string
+			##########################################################################
+			
+			print "returing now"
+
+			flag = True
+			# This handle MUST return a Service Response 
+			return response_package
+		except:
+			print "An Exception has ocurred."
+			flag = False
+
+def audio_to_text():
+	rospy.init_node('audio_to_text_service_node')
+	s = rospy.Service('audio_to_text', home_std_srv, handle_audio_to_text)
 	
 	print "########################################"
-	print "   Voice Sythetizer is up and running."
+	print "   Audio to text Service is up and running."
 	print "########################################"
 	
 	rospy.spin()
 
 if __name__ == "__main__":
-	voice_sythetizer()
+	audio_to_text()
 
 
 
 
+		
