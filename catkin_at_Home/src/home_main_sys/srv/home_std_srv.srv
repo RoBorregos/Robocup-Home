@@ -1,5 +1,7 @@
 int8 debugMode
 string newFaceName
+string textCommand
 ---
 int8 success
 string[] facesDetected
+int8 actionID

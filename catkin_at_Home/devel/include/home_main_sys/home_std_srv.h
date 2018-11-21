@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::home_main_sys::home_std_srv > {
   static const char* value()
   {
-    return "89dc66184617246b047b25d24799087a";
+    return "f61ede54b340f2a01b2627f1a416ee43";
   }
 
   static const char* value(const ::home_main_sys::home_std_srv&) { return value(); }

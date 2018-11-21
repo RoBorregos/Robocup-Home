@@ -25,11 +25,13 @@ struct home_std_srvRequest_
 
   home_std_srvRequest_()
     : debugMode(0)
-    , newFaceName()  {
+    , newFaceName()
+    , textCommand()  {
     }
   home_std_srvRequest_(const ContainerAllocator& _alloc)
     : debugMode(0)
-    , newFaceName(_alloc)  {
+    , newFaceName(_alloc)
+    , textCommand(_alloc)  {
   (void)_alloc;
     }
 
@@ -40,6 +42,9 @@ struct home_std_srvRequest_
 
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _newFaceName_type;
   _newFaceName_type newFaceName;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _textCommand_type;
+  _textCommand_type textCommand;
 
 
 
@@ -119,12 +124,12 @@ struct MD5Sum< ::home_main_sys::home_std_srvRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "99f51edefd6f5685f5ece83d46d13021";
+    return "a6f1b0d3644656a0ddd1371d8aef44d8";
   }
 
   static const char* value(const ::home_main_sys::home_std_srvRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x99f51edefd6f5685ULL;
-  static const uint64_t static_value2 = 0xf5ece83d46d13021ULL;
+  static const uint64_t static_value1 = 0xa6f1b0d3644656a0ULL;
+  static const uint64_t static_value2 = 0xddd1371d8aef44d8ULL;
 };
 
 template<class ContainerAllocator>
@@ -145,6 +150,7 @@ struct Definition< ::home_main_sys::home_std_srvRequest_<ContainerAllocator> >
   {
     return "int8 debugMode\n\
 string newFaceName\n\
+string textCommand\n\
 ";
   }
 
@@ -165,6 +171,7 @@ namespace serialization
     {
       stream.next(m.debugMode);
       stream.next(m.newFaceName);
+      stream.next(m.textCommand);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -187,6 +194,8 @@ struct Printer< ::home_main_sys::home_std_srvRequest_<ContainerAllocator> >
     Printer<int8_t>::stream(s, indent + "  ", v.debugMode);
     s << indent << "newFaceName: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.newFaceName);
+    s << indent << "textCommand: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.textCommand);
   }
 };
 

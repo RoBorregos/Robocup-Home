@@ -3,8 +3,12 @@
           DEBUGMODE
           NEWFACENAME-VAL
           NEWFACENAME
+          TEXTCOMMAND-VAL
+          TEXTCOMMAND
           SUCCESS-VAL
           SUCCESS
           FACESDETECTED-VAL
           FACESDETECTED
+          ACTIONID-VAL
+          ACTIONID
 ))

@@ -23,6 +23,7 @@ class home_std_srvRequest {
       // initObj === null is a special case for deserialization where we don't initialize fields
       this.debugMode = null;
       this.newFaceName = null;
+      this.textCommand = null;
     }
     else {
       if (initObj.hasOwnProperty('debugMode')) {
@@ -37,6 +38,12 @@ class home_std_srvRequest {
       else {
         this.newFaceName = '';
       }
+      if (initObj.hasOwnProperty('textCommand')) {
+        this.textCommand = initObj.textCommand
+      }
+      else {
+        this.textCommand = '';
+      }
     }
   }
 
@@ -46,6 +53,8 @@ class home_std_srvRequest {
     bufferOffset = _serializer.int8(obj.debugMode, buffer, bufferOffset);
     // Serialize message field [newFaceName]
     bufferOffset = _serializer.string(obj.newFaceName, buffer, bufferOffset);
+    // Serialize message field [textCommand]
+    bufferOffset = _serializer.string(obj.textCommand, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -57,13 +66,16 @@ class home_std_srvRequest {
     data.debugMode = _deserializer.int8(buffer, bufferOffset);
     // Deserialize message field [newFaceName]
     data.newFaceName = _deserializer.string(buffer, bufferOffset);
+    // Deserialize message field [textCommand]
+    data.textCommand = _deserializer.string(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
     let length = 0;
     length += object.newFaceName.length;
-    return length + 5;
+    length += object.textCommand.length;
+    return length + 9;
   }
 
   static datatype() {
@@ -73,7 +85,7 @@ class home_std_srvRequest {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '99f51edefd6f5685f5ece83d46d13021';
+    return 'a6f1b0d3644656a0ddd1371d8aef44d8';
   }
 
   static messageDefinition() {
@@ -81,6 +93,7 @@ class home_std_srvRequest {
     return `
     int8 debugMode
     string newFaceName
+    string textCommand
     
     `;
   }
@@ -105,6 +118,13 @@ class home_std_srvRequest {
       resolved.newFaceName = ''
     }
 
+    if (msg.textCommand !== undefined) {
+      resolved.textCommand = msg.textCommand;
+    }
+    else {
+      resolved.textCommand = ''
+    }
+
     return resolved;
     }
 };
@@ -115,6 +135,7 @@ class home_std_srvResponse {
       // initObj === null is a special case for deserialization where we don't initialize fields
       this.success = null;
       this.facesDetected = null;
+      this.actionID = null;
     }
     else {
       if (initObj.hasOwnProperty('success')) {
@@ -129,6 +150,12 @@ class home_std_srvResponse {
       else {
         this.facesDetected = [];
       }
+      if (initObj.hasOwnProperty('actionID')) {
+        this.actionID = initObj.actionID
+      }
+      else {
+        this.actionID = 0;
+      }
     }
   }
 
@@ -138,6 +165,8 @@ class home_std_srvResponse {
     bufferOffset = _serializer.int8(obj.success, buffer, bufferOffset);
     // Serialize message field [facesDetected]
     bufferOffset = _arraySerializer.string(obj.facesDetected, buffer, bufferOffset, null);
+    // Serialize message field [actionID]
+    bufferOffset = _serializer.int8(obj.actionID, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -149,6 +178,8 @@ class home_std_srvResponse {
     data.success = _deserializer.int8(buffer, bufferOffset);
     // Deserialize message field [facesDetected]
     data.facesDetected = _arrayDeserializer.string(buffer, bufferOffset, null)
+    // Deserialize message field [actionID]
+    data.actionID = _deserializer.int8(buffer, bufferOffset);
     return data;
   }
 
@@ -157,7 +188,7 @@ class home_std_srvResponse {
     object.facesDetected.forEach((val) => {
       length += 4 + val.length;
     });
-    return length + 5;
+    return length + 6;
   }
 
   static datatype() {
@@ -167,7 +198,7 @@ class home_std_srvResponse {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'c4beb2775f8d6671c83b18178053782a';
+    return 'a2ea2cce6cc27e2a1f66266a6165d24a';
   }
 
   static messageDefinition() {
@@ -175,6 +206,7 @@ class home_std_srvResponse {
     return `
     int8 success
     string[] facesDetected
+    int8 actionID
     
     `;
   }
@@ -199,6 +231,13 @@ class home_std_srvResponse {
       resolved.facesDetected = []
     }
 
+    if (msg.actionID !== undefined) {
+      resolved.actionID = msg.actionID;
+    }
+    else {
+      resolved.actionID = 0
+    }
+
     return resolved;
     }
 };
@@ -206,6 +245,6 @@ class home_std_srvResponse {
 module.exports = {
   Request: home_std_srvRequest,
   Response: home_std_srvResponse,
-  md5sum() { return '89dc66184617246b047b25d24799087a'; },
+  md5sum() { return 'f61ede54b340f2a01b2627f1a416ee43'; },
   datatype() { return 'home_main_sys/home_std_srv'; }
 };

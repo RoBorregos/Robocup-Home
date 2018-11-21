@@ -7,14 +7,15 @@ import struct
 
 
 class home_std_srvRequest(genpy.Message):
-  _md5sum = "99f51edefd6f5685f5ece83d46d13021"
+  _md5sum = "a6f1b0d3644656a0ddd1371d8aef44d8"
   _type = "home_main_sys/home_std_srvRequest"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 debugMode
 string newFaceName
+string textCommand
 """
-  __slots__ = ['debugMode','newFaceName']
-  _slot_types = ['int8','string']
+  __slots__ = ['debugMode','newFaceName','textCommand']
+  _slot_types = ['int8','string','string']
 
   def __init__(self, *args, **kwds):
     """
@@ -24,7 +25,7 @@ string newFaceName
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       debugMode,newFaceName
+       debugMode,newFaceName,textCommand
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -37,9 +38,12 @@ string newFaceName
         self.debugMode = 0
       if self.newFaceName is None:
         self.newFaceName = ''
+      if self.textCommand is None:
+        self.textCommand = ''
     else:
       self.debugMode = 0
       self.newFaceName = ''
+      self.textCommand = ''
 
   def _get_types(self):
     """
@@ -55,6 +59,12 @@ string newFaceName
     try:
       buff.write(_get_struct_b().pack(self.debugMode))
       _x = self.newFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.textCommand
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -82,6 +92,15 @@ string newFaceName
         self.newFaceName = str[start:end].decode('utf-8')
       else:
         self.newFaceName = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.textCommand = str[start:end].decode('utf-8')
+      else:
+        self.textCommand = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -96,6 +115,12 @@ string newFaceName
     try:
       buff.write(_get_struct_b().pack(self.debugMode))
       _x = self.newFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.textCommand
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -124,6 +149,15 @@ string newFaceName
         self.newFaceName = str[start:end].decode('utf-8')
       else:
         self.newFaceName = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.textCommand = str[start:end].decode('utf-8')
+      else:
+        self.textCommand = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -147,14 +181,15 @@ import struct
 
 
 class home_std_srvResponse(genpy.Message):
-  _md5sum = "c4beb2775f8d6671c83b18178053782a"
+  _md5sum = "a2ea2cce6cc27e2a1f66266a6165d24a"
   _type = "home_main_sys/home_std_srvResponse"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 success
 string[] facesDetected
+int8 actionID
 """
-  __slots__ = ['success','facesDetected']
-  _slot_types = ['int8','string[]']
+  __slots__ = ['success','facesDetected','actionID']
+  _slot_types = ['int8','string[]','int8']
 
   def __init__(self, *args, **kwds):
     """
@@ -164,7 +199,7 @@ string[] facesDetected
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       success,facesDetected
+       success,facesDetected,actionID
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -177,9 +212,12 @@ string[] facesDetected
         self.success = 0
       if self.facesDetected is None:
         self.facesDetected = []
+      if self.actionID is None:
+        self.actionID = 0
     else:
       self.success = 0
       self.facesDetected = []
+      self.actionID = 0
 
   def _get_types(self):
     """
@@ -202,6 +240,7 @@ string[] facesDetected
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      buff.write(_get_struct_b().pack(self.actionID))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -230,6 +269,9 @@ string[] facesDetected
         else:
           val1 = str[start:end]
         self.facesDetected.append(val1)
+      start = end
+      end += 1
+      (self.actionID,) = _get_struct_b().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -251,6 +293,7 @@ string[] facesDetected
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      buff.write(_get_struct_b().pack(self.actionID))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -280,6 +323,9 @@ string[] facesDetected
         else:
           val1 = str[start:end]
         self.facesDetected.append(val1)
+      start = end
+      end += 1
+      (self.actionID,) = _get_struct_b().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -296,6 +342,6 @@ def _get_struct_b():
     return _struct_b
 class home_std_srv(object):
   _type          = 'home_main_sys/home_std_srv'
-  _md5sum = '89dc66184617246b047b25d24799087a'
+  _md5sum = 'f61ede54b340f2a01b2627f1a416ee43'
   _request_class  = home_std_srvRequest
   _response_class = home_std_srvResponse
