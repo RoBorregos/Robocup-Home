@@ -37,7 +37,8 @@ def handle_face_learning_service(request_package):
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
 	# time.sleep(5)
-	subprocess.call("python3","/home/sebasrivera96/Documents/Github/tabellarius/main.py", "learn", "request_package.newFaceName"])
+	newName = request_package.newFaceName
+	subprocess.call("python3","/home/sebasrivera96/Documents/Github/tabellarius/main.py", "learn", newName])
 
 
 

@@ -3,6 +3,7 @@
 import rospy
 from home_main_sys.srv import *
 import time
+import subprocess
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
@@ -34,9 +35,8 @@ def handle_face_detection_service(req):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	time.sleep(5)
-
-
+	# time.sleep(5)
+	subprocess.call(["python3", "/home/sebasrivera96/Documents/Github/tabellarius/main.py", "recognize"])
 
 	##########################################################################
 	
