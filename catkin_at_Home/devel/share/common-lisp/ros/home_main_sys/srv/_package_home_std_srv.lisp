@@ -9,6 +9,8 @@
           SUCCESS
           FACESDETECTED-VAL
           FACESDETECTED
+          TARGETFACENAME-VAL
+          TARGETFACENAME
           ACTIONID-VAL
           ACTIONID
           TEXTFROMAUDIO-VAL

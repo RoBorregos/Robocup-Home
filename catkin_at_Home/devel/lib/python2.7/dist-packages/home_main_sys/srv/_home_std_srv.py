@@ -181,16 +181,18 @@ import struct
 
 
 class home_std_srvResponse(genpy.Message):
-  _md5sum = "b1e285d5f37d939954167facbe11a055"
+  _md5sum = "5154f07ab36983b5aa1f755407bea6e4"
   _type = "home_main_sys/home_std_srvResponse"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 success
 string[] facesDetected
+string targetFaceName
 int8 actionID
 string textFromAudio
+
 """
-  __slots__ = ['success','facesDetected','actionID','textFromAudio']
-  _slot_types = ['int8','string[]','int8','string']
+  __slots__ = ['success','facesDetected','targetFaceName','actionID','textFromAudio']
+  _slot_types = ['int8','string[]','string','int8','string']
 
   def __init__(self, *args, **kwds):
     """
@@ -200,7 +202,7 @@ string textFromAudio
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       success,facesDetected,actionID,textFromAudio
+       success,facesDetected,targetFaceName,actionID,textFromAudio
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -213,6 +215,8 @@ string textFromAudio
         self.success = 0
       if self.facesDetected is None:
         self.facesDetected = []
+      if self.targetFaceName is None:
+        self.targetFaceName = ''
       if self.actionID is None:
         self.actionID = 0
       if self.textFromAudio is None:
@@ -220,6 +224,7 @@ string textFromAudio
     else:
       self.success = 0
       self.facesDetected = []
+      self.targetFaceName = ''
       self.actionID = 0
       self.textFromAudio = ''
 
@@ -244,6 +249,12 @@ string textFromAudio
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      _x = self.targetFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
       buff.write(_get_struct_b().pack(self.actionID))
       _x = self.textFromAudio
       length = len(_x)
@@ -280,6 +291,15 @@ string textFromAudio
           val1 = str[start:end]
         self.facesDetected.append(val1)
       start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.targetFaceName = str[start:end].decode('utf-8')
+      else:
+        self.targetFaceName = str[start:end]
+      start = end
       end += 1
       (self.actionID,) = _get_struct_b().unpack(str[start:end])
       start = end
@@ -312,6 +332,12 @@ string textFromAudio
           val1 = val1.encode('utf-8')
           length = len(val1)
         buff.write(struct.pack('<I%ss'%length, length, val1))
+      _x = self.targetFaceName
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      buff.write(struct.pack('<I%ss'%length, length, _x))
       buff.write(_get_struct_b().pack(self.actionID))
       _x = self.textFromAudio
       length = len(_x)
@@ -349,6 +375,15 @@ string textFromAudio
           val1 = str[start:end]
         self.facesDetected.append(val1)
       start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.targetFaceName = str[start:end].decode('utf-8')
+      else:
+        self.targetFaceName = str[start:end]
+      start = end
       end += 1
       (self.actionID,) = _get_struct_b().unpack(str[start:end])
       start = end
@@ -376,6 +411,6 @@ def _get_struct_b():
     return _struct_b
 class home_std_srv(object):
   _type          = 'home_main_sys/home_std_srv'
-  _md5sum = '0ab834d75b4e6c933d600484c31b505e'
+  _md5sum = '545d9745cfdca0f0ffe4b73783ff6bc8'
   _request_class  = home_std_srvRequest
   _response_class = home_std_srvResponse

@@ -26,7 +26,7 @@ import time
 
 
 # Service requieres a srv package
-request_pakcage = [0, "Emilio is calling", "Hello. ros is working great!"]
+request_pakcage = [0, "Emilio is calling","Hello. ros is working great!"]
 
 
 def call_test_node_service(request_pakcage):

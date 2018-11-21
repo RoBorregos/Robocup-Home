@@ -40,23 +40,30 @@ def handle_audio_to_text(request_package):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-
-	r = sr.Recognizer()
-	with sr.Microphone() as source:
-		print ('say something')
-		audio = r.listen(source)
-
-	# try:
-	audio_string = r.recognize_google(audio)
-	print(audio_string)
-
-	response_package.textFromAudio = audio_string
-	##########################################################################
+	flag = False
 	
-	print "returing now"
+	while not flag:
+		try:
 
-	# This handle MUST return a Service Response 
-	return response_package
+			r = sr.Recognizer()
+			with sr.Microphone() as source:
+				print ('say something')
+				audio = r.listen(source)
+
+			audio_string = r.recognize_google(audio)
+			print(audio_string)
+
+			response_package.textFromAudio = audio_string
+			##########################################################################
+			
+			print "returing now"
+
+			flag = True
+			# This handle MUST return a Service Response 
+			return response_package
+		except:
+			print "An Exception has ocurred."
+			flag = False
 
 def audio_to_text():
 	rospy.init_node('audio_to_text_service_node')
