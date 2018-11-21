@@ -45,7 +45,7 @@ def handle_orb_movement_service(request_package):
 	arduino.write("Init")
 	arduino.write("1")
 
-	subprocess.call(["/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/mono_tum","/home/sebasrivera96/Documents/ORB_SLAM2/Vocabulary/ORBvoc.txt","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/TUM1.yaml","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/Sequence"])
+	subprocess.check_output(["/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/mono_tum","/home/sebasrivera96/Documents/ORB_SLAM2/Vocabulary/ORBvoc.txt","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/TUM1.yaml","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/Sequence"])
 
 	while arduino.in_waiting() <= 0:
 		pass
