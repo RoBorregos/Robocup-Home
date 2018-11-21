@@ -3,6 +3,9 @@
 import rospy
 from home_main_sys.srv import *
 import time
+import requests
+import serial
+import subprocess
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -33,9 +36,21 @@ def handle_orb_movement_service(req):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	time.sleep(5)
+	puerto = 'COM6'
+	arduino = serial.Serial(puerto, 9600)
+	print 'Connecting to ', puerto
+	print 'Waiting for ROS command...'
+	
+	arduino.write("Init")
+	arduino.write("1")
 
+	subprocess.call(["Examples/Monocular/mono_tum","Vocabulary/ORBvoc.txt","Examples/Monocular/TUM1.yaml","Examples/Monocular/Sequence"])
 
+	while arduino.in_waiting() <= 0:
+		pass
+
+	if arduino.read() == "0"
+		print 'ORBSLAM2 done'
 
 	##########################################################################
 	
