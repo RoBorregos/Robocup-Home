@@ -8,4 +8,3 @@
 
 # modified environment variables
 export PWD="/home/parallels/Robocup-Home/catkin_at_Home/build"
-export PYTHONPATH="/home/parallels/Robocup-Home/catkin_at_Home/devel/lib/python2.7/dist-packages:$PYTHONPATH"

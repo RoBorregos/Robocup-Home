@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
+from gtts import gTTS
+from io import BytesIO
+
+from pygame import mixer
+import pygame
+
+from tempfile import TemporaryFile
+
 import rospy
 from home_main_sys.srv import *
 import time
-import requests
-import serial
-import subprocess
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -26,7 +31,8 @@ import subprocess
 # Funcionality is implemented here
 ###################################
 
-def handle_orb_movement_service(request_package):
+def handle_voice_sythetizer(request_package):
+
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.
@@ -36,22 +42,27 @@ def handle_orb_movement_service(request_package):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	puerto = '/dev/ttyACM0'
-	arduino = serial.Serial(puerto, 9600)
-	print 'Connecting to ', puerto
-	print 'Waiting for ROS command...'
 
-	time.sleep(7)	
-	arduino.write("Init")
-	arduino.write("1")
+	text_to_speak = request_package.textCommand
 
-	subprocess.call(["/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/mono_tum","/home/sebasrivera96/Documents/ORB_SLAM2/Vocabulary/ORBvoc.txt","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/TUM1.yaml","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/Sequence"])
+	tts = gTTS(text_to_speak, "en")
 
-	while arduino.in_waiting() <= 0:
-		pass
+	sf = TemporaryFile()
+	tts.write_to_fp(sf)
+	sf.seek(0)
+	mixer.init()
+	mixer.music.load(sf)
 
-	if arduino.read() == "0":
-		print 'ORBSLAM2 done'
+	print "I will synthetize the following text : ", text_to_speak
+	print "speaking now"
+	mixer.music.play()
+
+	# Wait to finish speaking
+	while mixer.music.get_busy(): 
+		pygame.time.Clock().tick(10)
+	print "Done speaking"
+
+
 
 	##########################################################################
 	
@@ -60,15 +71,19 @@ def handle_orb_movement_service(request_package):
 	# This handle MUST return a Service Response 
 	return response_package
 
-def atomic3_orb_movement():
-	rospy.init_node('atomic3_orb_movement_service_node')
-	s = rospy.Service('atomic3_orb_movement', home_std_srv, handle_orb_movement_service)
+def voice_sythetizer():
+	rospy.init_node('voice_sythetizer_service_node')
+	s = rospy.Service('voice_sythetizer', home_std_srv, handle_voice_sythetizer)
 	
 	print "########################################"
-	print "Orb and Movement Service is up and running."
+	print "   Voice Sythetizer is up and running."
 	print "########################################"
 	
 	rospy.spin()
 
 if __name__ == "__main__":
-	atomic3_orb_movement()
+	voice_sythetizer()
+
+
+
+

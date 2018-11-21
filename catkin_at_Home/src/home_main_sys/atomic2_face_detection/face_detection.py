@@ -11,13 +11,13 @@ import subprocess
 # SERVICE PKG DEFINITION
 # 	works struct-like
 
-# int8 debugMode			
-# string newFaceName		Request params
-# string textCommand
+# int8 debugMode					|
+# string newFaceName				| Request params
+# string textCommand				|
 # ---
-# int8 success	(1) TRUE	(2) FALSE
-# string[] facesDetected	Response params
-# int8 actionID
+# int8 success	(1) TRUE (2) FALSE	|
+# string[] facesDetected			| Response params
+# int8 actionID						|
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -25,7 +25,7 @@ import subprocess
 # Funcionality is implemented here
 ###################################
 
-def handle_face_detection_service(req):
+def handle_face_detection_service(request_package):
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.

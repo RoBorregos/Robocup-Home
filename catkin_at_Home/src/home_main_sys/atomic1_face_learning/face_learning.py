@@ -11,13 +11,13 @@ import subprocess
 # SERVICE PKG DEFINITION
 # 	works struct-like
 
-# int8 debugMode			
-# string newFaceName		Request params
-# string textCommand
+# int8 debugMode					|
+# string newFaceName				| Request params
+# string textCommand				|
 # ---
-# int8 success	(1) TRUE	(2) FALSE
-# string[] facesDetected	Response params
-# int8 actionID
+# int8 success	(1) TRUE (2) FALSE	|
+# string[] facesDetected			| Response params
+# int8 actionID						|
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
