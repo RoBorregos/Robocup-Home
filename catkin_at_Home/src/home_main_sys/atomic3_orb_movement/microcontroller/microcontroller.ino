@@ -255,7 +255,7 @@ void loop() {
       // 1.- Movement rutine
       case 1:
       {
-        delay(3000);
+        delay(6000);
         moveForward(2000);
         delay(1000);
         turnTo(315);

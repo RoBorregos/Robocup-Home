@@ -36,20 +36,21 @@ def handle_orb_movement_service(req):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	puerto = 'COM6'
+	puerto = '/dev/ttyACM0'
 	arduino = serial.Serial(puerto, 9600)
 	print 'Connecting to ', puerto
 	print 'Waiting for ROS command...'
-	
+
+	time.sleep(7)	
 	arduino.write("Init")
 	arduino.write("1")
 
-	subprocess.call(["Examples/Monocular/mono_tum","Vocabulary/ORBvoc.txt","Examples/Monocular/TUM1.yaml","Examples/Monocular/Sequence"])
+	subprocess.call(["/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/mono_tum","/home/sebasrivera96/Documents/ORB_SLAM2/Vocabulary/ORBvoc.txt","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/TUM1.yaml","/home/sebasrivera96/Documents/ORB_SLAM2/Examples/Monocular/Sequence"])
 
 	while arduino.in_waiting() <= 0:
 		pass
 
-	if arduino.read() == "0"
+	if arduino.read() == "0":
 		print 'ORBSLAM2 done'
 
 	##########################################################################
