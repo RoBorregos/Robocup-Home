@@ -3,6 +3,7 @@
 import rospy
 from home_main_sys.srv import *
 import time
+import subprocess
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
@@ -24,6 +25,7 @@ import time
 # Funcionality is implemented here
 ###################################
 
+
 def handle_face_learning_service(request_package):
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
@@ -34,7 +36,9 @@ def handle_face_learning_service(request_package):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	time.sleep(5)
+	# time.sleep(5)
+	newName = request_package.newFaceName
+	subprocess.call("python3","/home/sebasrivera96/Documents/Github/tabellarius/main.py", "learn", newName])
 
 
 
