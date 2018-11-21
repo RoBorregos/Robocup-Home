@@ -5,6 +5,8 @@ from home_main_sys.srv import *
 import time
 import subprocess
 
+facesFilePath = "/home/sebasrivera96/Documents/Github/tabellarius/namesFaces.txt"
+
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -37,7 +39,11 @@ def handle_face_detection_service(request_package):
 	##########################################################################
 	# time.sleep(5)
 	subprocess.call(["python3", "/home/sebasrivera96/Documents/Github/tabellarius/main.py", "recognize"])
-
+	file = open(facesFilePath, 'r')
+	returnList = file.readlines()
+	response_package.facesDetected = returnList
+	# for i in returnList:
+	# 	i = i[:-2]
 	##########################################################################
 	
 	print "returing now"
