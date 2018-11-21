@@ -23,7 +23,7 @@ import time
 # Funcionality is implemented here
 ###################################
 
-def handle_orb_movement_service(req):
+def handle_orb_movement_service(request_package):
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.

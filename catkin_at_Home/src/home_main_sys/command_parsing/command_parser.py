@@ -94,8 +94,6 @@ class command_parser():
 
 
 	def audio_to_text(self):
-
-		
 		self.speak_text('Hello. What is your command')
 
 

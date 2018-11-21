@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 
+from gtts import gTTS
+from io import BytesIO
+
+from pygame import mixer
+import pygame
+
+from tempfile import TemporaryFile
+
 import rospy
 from home_main_sys.srv import *
 import time
-
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -24,7 +31,8 @@ import time
 # Funcionality is implemented here
 ###################################
 
-def handle_face_detection_service(request_package):
+def handle_voice_sythetizer(request_package):
+
 	# Service has to return a response of the following class only.
 	# meaningless values have been used to initialize objt. 
 	# Modify only those filds that have a purpose on your service.
@@ -34,7 +42,25 @@ def handle_face_detection_service(request_package):
 
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
-	time.sleep(5)
+
+	text_to_speak = request_package.textCommand
+
+	tts = gTTS(text_to_speak, "en")
+
+	sf = TemporaryFile()
+	tts.write_to_fp(sf)
+	sf.seek(0)
+	mixer.init()
+	mixer.music.load(sf)
+
+	print "I will synthetize the following text : ", text_to_speak
+	print "speaking now"
+	mixer.music.play()
+
+	# Wait to finish speaking
+	while mixer.music.get_busy(): 
+		pygame.time.Clock().tick(10)
+	print "Done speaking"
 
 
 
@@ -45,14 +71,19 @@ def handle_face_detection_service(request_package):
 	# This handle MUST return a Service Response 
 	return response_package
 
-def atomic2_face_detection():
-	rospy.init_node('atomic2_face_detection_service_node')
-	s = rospy.Service('atomic2_face_detection', home_std_srv, handle_face_detection_service)
+def voice_sythetizer():
+	rospy.init_node('voice_sythetizer_service_node')
+	s = rospy.Service('voice_sythetizer', home_std_srv, handle_voice_sythetizer)
 	
 	print "########################################"
-	print "Face Detection Service is up and running."
+	print "   Voice Sythetizer is up and running."
 	print "########################################"
+	
 	rospy.spin()
 
 if __name__ == "__main__":
-	atomic2_face_detection()
+	voice_sythetizer()
+
+
+
+
