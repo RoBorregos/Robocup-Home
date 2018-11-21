@@ -308,10 +308,12 @@ int main(){
 			//cout<<testSentences[i]<<endl;
 			parseSentence(testSentences, MainActions,i);
 		}
+		return 0;
 	}
-	catch (int e)
+	catch (...)
 	{
 		writeActions(-1);
+		return 0;
 	}
   return 0;
 	

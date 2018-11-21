@@ -4,6 +4,7 @@ import rospy
 from home_main_sys.srv import *
 import time
 import subprocess
+import os
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@
@@ -38,12 +39,33 @@ def handle_command_parsing(request_package):
 	"""FUNCTIONALITY GOES HERE"""
 	##########################################################################
 	command_in_text = request_package.textCommand
+	response_package.actionID = -1
+	response_package.targetFaceName = ""
+
+	f = open('sentence.txt', 'w')
+	f.write(command_in_text)
+	#Call compiled parser
+	dir_path = os.path.dirname(os.path.realpath(__file__))
+	#print (dir_path)
+	loc = dir_path+'/main'
+	#print(loc)
+	p = subprocess.Popen([loc])
+	print(p)
+	out = open('output.txt','r+')
+	answer = out.readline()
+	params = []
+	for word in answer.split():
+        	params.append(word)      
+	print(params)
+	if(params[0]!=-1 and params[0]!=4):
+		response_package.actionID = params[0]
+	if(len(params)>1):
+		response_package.targetFaceName = params[1]
+	
+	out.close()
+	os.remove('output.txt')
 
 
-
-
-	-1 = response_package.actionID
-	"" = response_package.targetFaceName
 	##########################################################################
 	
 	print "returing now"
