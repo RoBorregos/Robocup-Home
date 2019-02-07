@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include "Command.h"
 #include <unordered_map>
 #include <vector>
 #include <sstream>
@@ -24,8 +23,7 @@ bool debug=true;
 unordered_map<string,string> tags;
 
 //Check if there is an 'and' joining 2 sentences based on the quantity of verbs
-bool checkAnd(unordered_map<string,vector<string>> sentenceTags,unordered_map<string,vector<string>> ::iterator end){
-	cout<<"--Checks if multiple sentences "<<endl;
+bool checkAnd(unordered_map<string,vector<string>> sentenceTags,unordered_map<string,vector<string>>::iterator end){
 	unordered_map<string,vector<string>>::iterator it;
 	int  mainVerbs=0;
 	for(it=sentenceTags.begin(); it!= end; it++){
@@ -74,7 +72,7 @@ void writeActions(int id){
 	output<<id;
 }
 //-----------------------------Switch con los verbos conocidos, brutalmente sencillo----------------
-bool addToActions(Command &MainActions, unordered_map<string,vector<string>> sentenceTags){
+bool addToActions(unordered_map<string,vector<string>> sentenceTags){
 	cout<<"--Ready to generate commands from sentences"<<endl;
 	unordered_map<string,vector<string>> ::iterator end = sentenceTags.end();
  	bool multipleSentences = checkAnd(sentenceTags,end);
@@ -222,7 +220,7 @@ string splitIntoSentences(string &newSentence,string sentence){
 	}
 }
 
-void parseSentence(vector<string> &sentences, Command &MainActions, int i){
+void parseSentence(vector<string> &sentences, int i){
 	string sentence = sentences[i];
 	cout<<"------------New sentence to be parsed-------------"<<endl;
 	//Regresa el MainActions Modificado con las nuevas acciones agregadas al queue.
@@ -255,7 +253,7 @@ void parseSentence(vector<string> &sentences, Command &MainActions, int i){
 		}
 	}
 	 
-	if(!addToActions(MainActions, sentenceTags)){
+	if(!addToActions( sentenceTags)){
 		string newSentence;
 		//Splits the current sentence into 2 sentences
 		sentences[i]=splitIntoSentences(newSentence, sentences[i]);
@@ -264,7 +262,7 @@ void parseSentence(vector<string> &sentences, Command &MainActions, int i){
 		sentences.insert(sentences.begin()+i+1,newSentence);
 		//Recursive call to process again the current sentence
 		cout<<"--Checks again the sentence"<<endl;
-		parseSentence(sentences,MainActions,i);
+		parseSentence(sentences,i);
 	}
 	//Identify corresponding action on the robot
 	//Iterate through sentenceTags and check if first[0]=='V' then a verb has been detected
@@ -289,7 +287,7 @@ int main(){
 	//Generate hash map from text file
 	try
 	{
-		Command MainActions;
+
 		vector<string> testSentences;
 		readDictionary();
 		//Hacer el llamado al Alexa API
@@ -306,13 +304,16 @@ int main(){
 		testSentences.push_back(readSentence());
 		for(int i=0; i<testSentences.size();i++){
 			//cout<<testSentences[i]<<endl;
-			parseSentence(testSentences, MainActions,i);
+			parseSentence(testSentences,i);
 		}
+		return 0;
 	}
-	catch (int e)
+	catch (...)
 	{
 		writeActions(-1);
+		return 0;
 	}
   return 0;
 	
 }
+

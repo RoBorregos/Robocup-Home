@@ -16,7 +16,7 @@
 | UW | Unknown Word |
 | NI | Not important (robot,hi,etc) |
 | QW | Question Word (Who,What,Where,When)|
-| VE | Exploration verbs (Explore, Search, Map, Find)
+| VE | Exploration verbs (Explore, Search, Map, Find) |
 
 | Tag | Method and parameters |
 | ---- | ---------------------|   

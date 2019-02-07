@@ -30,5 +30,5 @@
         "typeinfo": "cpp",
         "utility": "cpp"
     },
-    "python.pythonPath": "C:\\Users\\pev\\.platformio\\penv\\python.exe"
+    "python.pythonPath": "/usr/bin/python"
 }
