@@ -1,23 +1,21 @@
-# TODO: Review why we are using this old version of CMake.
 cmake_minimum_required(VERSION 2.8.3)
-project(devices)
-
-# Includes `ExternalProject_Add()`.
-include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
+project(laser_simulator)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
   roscpp
   rospy
-  roslib
-  audio_common_msgs
-  message_generation
-  intercom
+  sensor_msgs
+  std_msgs
+  tf
+  occupancy_grid_utils
+  random_numbers
 )
 
 ## System dependencies are found with CMake's conventions
@@ -75,11 +73,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   audio_common_msgs
-   intercom
- )
+# generate_messages(
+#   DEPENDENCIES
+#   geometry_msgs#   sensor_msgs#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,12 +107,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-# TODO: Include the dependencies of RNNoise.
-# https://answers.ros.org/question/261002/catkin_packagecatkin_depends-vs-find_packagecatkin-required-components/
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES devices
-   CATKIN_DEPENDS roscpp rospy roslib message_runtime audio_common_msgs intercom
+#  LIBRARIES laser_simulator
+#  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs std_msgs tf
 #  DEPENDS system_lib
 )
 
@@ -127,13 +122,12 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  src
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/devices.cpp
+#   src/${PROJECT_NAME}/laser_simulator.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -144,7 +138,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/devices_node.cpp)
+add_executable(laser_simulator src/laser_simulator_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,62 +148,11 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(laser_simulator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
-
-# Declare the rnnoise_sl target.
-# It is an external, static, c library (.a).
-# It is directly downloaded from https://github.com/xiph/rnnoise and built as its
-# README says. For this, linux is assumed, also that configure, make, and ar are 
-# installed.
-# https://mirkokiefer.com/cmake-by-example-f95eb47d45b1
-
-# TODO: Because we are using this to only download the file and uncompress it,
-# maybe try to use another simpler macro.
-ExternalProject_Add(
-  rnnoise_project
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir
-  # TODO: Check using better the GIT args and maybe using a commit instead of master.
-  URL https://github.com/xiph/rnnoise/archive/master.zip
-  # As this macro seems to not support several *_COMMAND args, we move the 
-  # commands to `add_custom_command()`.
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-# Make the building steps for the downloaded RNNoise.
-# TODO: Try to move this to the downloading part or something to avoid cmake running
-# this steps each time.
-add_custom_command(
-  TARGET rnnoise_project
-  # Even that the library is actually used in link-time, with PRE_LINK doesn't
-  # work. Maybe because it is used but through another target.
-  PRE_BUILD
-  COMMAND "${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/autogen.sh"
-  COMMAND "${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/configure"
-  COMMAND "make" "--directory=${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project"
-  COMMAND "ar" "rcs" "${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/rnnoise.a" "${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/src/*.o"
-  COMMENT "Building the library RNNoise (Note you need linux, configure, make, and ar installed)....."
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project
-)
-
-# Declare an "actual" library that will depend in the real RNNoise downloaded-and-built library.
-add_library(rnnoise_sl STATIC IMPORTED)
-set_target_properties(rnnoise_sl PROPERTIES 
-  LINKER_LANGUAGE C
-  IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/rnnoise.a
-  # This header location doesn't seem to be used, that's why the following `include_directories()`.
-  PUBLIC_HEADER ${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/include/rnnoise.h
-)
-add_dependencies(rnnoise_sl rnnoise_project)
-
-include_directories(
-  ${CMAKE_CURRENT_BINARY_DIR}/rnnoise_project_dir/src/rnnoise_project/include
+target_link_libraries(laser_simulator
+  ${catkin_LIBRARIES}
 )
 
 #############
@@ -226,11 +169,18 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-## Mark executables and/or libraries for installation
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
+## Mark executables for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
+# install(TARGETS ${PROJECT_NAME}_node
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark libraries for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
+# install(TARGETS ${PROJECT_NAME}
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 # )
 
 ## Mark cpp header files for installation
@@ -252,23 +202,10 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_devices.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_laser_simulator.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-# Declare the `InputAudio` target.
-# TODO: Maybe move this to the "Building" section will be better.
-add_executable(InputAudio
-  src/InputAudio.cpp
-  src/RnnoiseMethods/HelperMethods.cpp
-  src/RnnoiseMethods/Algorithm3Steps1.cpp
-  src/RnnoiseMethods/AlgorithmAccTolerance1.cpp
-)
-target_link_libraries(InputAudio ${catkin_LIBRARIES} rnnoise_sl)
-# TODO: These dependecies seem to be not needed, now they generate a warning
-# and, in later cmake versions, an error...
-add_dependencies(InputAudio audio_common_msgs message_generation)

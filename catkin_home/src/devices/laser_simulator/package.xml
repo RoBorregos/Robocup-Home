@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>devices</name>
-  <version>2.0.0</version>
-  <description>The devices package</description>
+  <name>laser_simulator</name>
+  <version>0.0.0</version>
+  <description>The laser_simulator package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="paul@todo.todo">paul</maintainer>
+  <maintainer email="markthemagnificent@todo.todo">markthemagnificent</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/devices</url> -->
+  <!-- <url type="website">http://wiki.ros.org/laser_simulator</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -49,22 +49,30 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>audio_common_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
-  <build_depend>roslib</build_depend>
-  <build_depend>intercom</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>occupancy_grid_utils</build_depend>
+  <build_depend>random_numbers</build_depend>
+  <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
-  <build_export_depend>roslib</build_export_depend>
-  <build_export_depend>audio_common_msgs</build_export_depend>
-  <exec_depend>audio_common_msgs</exec_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>tf</build_export_depend>
+  <build_export_depend>occupancy_grid_utils</build_export_depend>
+  <build_export_depend>random_numbers</build_export_depend>
+  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
-  <exec_depend>intercom</exec_depend>
-  <build_depend>message_generation</build_depend>
-  <exec_depend>message_runtime</exec_depend>
-  <exec_depend>roslib</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>occupancy_grid_utils</exec_depend>
+  <exec_depend>random_numbers</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
