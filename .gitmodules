@@ -1,0 +1,3 @@
+[submodule "catkin_home/src/devices/rplidar_ros"]
+	path = catkin_home/src/devices/rplidar_ros
+	url = https://github.com/robopeak/rplidar_ros.git
