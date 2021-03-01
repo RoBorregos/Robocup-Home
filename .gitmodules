@@ -1,3 +1,7 @@
 [submodule "catkin_home/src/devices/rplidar_ros"]
 	path = catkin_home/src/devices/rplidar_ros
 	url = https://github.com/robopeak/rplidar_ros.git
+[submodule "catkin_home/src/navigation/hector_slam"]
+	path = catkin_home/src/navigation/hector_slam
+	url = https://github.com/tu-darmstadt-ros-pkg/hector_slam.git
+	branch = melodic-devel
