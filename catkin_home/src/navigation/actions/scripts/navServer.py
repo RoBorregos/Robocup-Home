@@ -27,7 +27,8 @@ Valid states:
 Valid Actions:
     gt-Place
     so-Object
-    ao-toDefine
+    TODO:
+    ao-Position
 """
 class navigationServer(object):
     # Create messages that are used to publish feedback/result
